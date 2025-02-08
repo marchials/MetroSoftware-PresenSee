@@ -9,20 +9,20 @@ module.exports = function(sequelize, DataTypes) {
     },
     nama: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true // Mengubah allowNull menjadi true
     },
     nip: {
       type: DataTypes.STRING(20),
-      allowNull: true,
+      allowNull: true, // Mengubah allowNull menjadi true
       unique: "nip"
     },
     jabatan: {
       type: DataTypes.STRING(255),
-      allowNull: false
+      allowNull: true // Mengubah allowNull menjadi true
     },
     rfid_tag: {
       type: DataTypes.STRING(50),
-      allowNull: true,
+      allowNull: false,
       unique: "rfid_tag"
     }
   }, {

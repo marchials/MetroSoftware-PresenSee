@@ -1,4 +1,4 @@
-const { modes } = require('../models');
+const { modes } = require("../models");
 
 module.exports = {
   // Buat atau pastikan mode pertama selalu ada
@@ -6,7 +6,7 @@ module.exports = {
     try {
       let firstMode = await modes.findOne();
       if (!firstMode) {
-        firstMode = await modes.create({ modes: 'SCAN' });
+        firstMode = await modes.create({ modes: "SCAN" });
       }
       res.status(200).json(firstMode);
     } catch (error) {
@@ -19,25 +19,28 @@ module.exports = {
     try {
       let firstMode = await modes.findOne();
       if (!firstMode) {
-        firstMode = await modes.create({ modes: 'SCAN' });
+        firstMode = await modes.create({ modes: "SCAN" });
       }
 
       // Update mode baru
       await firstMode.update({ modes: req.body.modes });
 
       // Jika mode berubah ke ADD, auto-revert ke SCAN dalam 5 detik
-      if (req.body.modes === 'ADD') {
+      if (req.body.modes === "ADD") {
         setTimeout(async () => {
           try {
             let currentMode = await modes.findOne();
-            if (currentMode.modes === 'ADD') {
-              await currentMode.update({ modes: 'SCAN' });
-              console.log('[AUTO-REVERT] Mode kembali ke SCAN');
+            if (currentMode && currentMode.modes === "ADD") {
+              await modes.update(
+                { modes: "SCAN" },
+                { where: { id_mode: currentMode.id_mode } }
+              );
+              console.log("[AUTO-REVERT] Mode kembali ke SCAN");
             }
           } catch (error) {
-            console.error('Gagal auto-revert:', error);
+            console.error("Gagal auto-revert:", error);
           }
-        }, 5000);
+        }, 10000);
       }
 
       res.status(200).json(firstMode);
@@ -51,11 +54,11 @@ module.exports = {
     try {
       let firstMode = await modes.findOne();
       if (!firstMode) {
-        firstMode = await modes.create({ modes: 'SCAN' });
+        firstMode = await modes.create({ modes: "SCAN" });
       }
       res.status(200).json({ mode: firstMode.modes });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
-  }
+  },
 };

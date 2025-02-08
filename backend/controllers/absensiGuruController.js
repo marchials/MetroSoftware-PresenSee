@@ -19,8 +19,8 @@ const addAbsensi = async (req, res) => {
   // Validasi jam masuk dan pulang
   const hour = now.hour();
   const minute = now.minute();
-  const isValidMasuk = (hour === 6 && minute >= 0) || (hour === 7 && minute <= 30);
-  const isValidKeluar = (hour === 15 && minute >= 0) || (hour === 16 && minute <= 0);
+  const isValidMasuk = (hour === 8 && minute >= 0) || (hour === 17 && minute <= 0);
+  const isValidKeluar = (hour === 8 && minute >= 0) || (hour === 17 && minute <= 0);
 
   try {
     // Cek apakah RFID ada di database guru

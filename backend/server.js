@@ -8,7 +8,8 @@ const guruRoutes = require("./routes/guruRoutes");
 const siswaRoutes = require("./routes/siswaRoutes");
 const absensiGuruRoutes = require("./routes/absensiGuruRoutes");
 const absensiSiswaRoutes = require("./routes/absensiSiswaRoutes");
-const modesRoutes = require('./routes/modesRoutes');
+const modesRoutes = require("./routes/modesRoutes");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 dotenv.config();
 
@@ -30,8 +31,11 @@ app.use("/api/siswa", siswaRoutes);
 // Routes Absensi Guru & Siswa
 app.use("/api/absensi", absensiGuruRoutes, absensiSiswaRoutes);
 
-// Routes Modes 
-app.use('/api/modes', modesRoutes);
+// Routes Modes
+app.use("/api/modes", modesRoutes);
+
+// Routes Dashboard
+app.use("/api/dashboard", dashboardRoutes);
 
 // Test route
 app.get("/", (req, res) => {

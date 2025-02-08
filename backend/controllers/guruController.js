@@ -4,30 +4,39 @@ dotenv.config();
 
 // Menambahkan guru baru
 const createGuru = async (req, res) => {
-  const { nama, nip, jabatan, rfid_tag } = req.body;
+  const { nama = null, nip = null, jabatan = null, rfid_tag } = req.body;
 
-  if (!nama || !jabatan) {
-    return res.status(400).json({ message: 'Nama dan jabatan wajib diisi' });
+  if (!rfid_tag) {
+    return res.status(400).json({ message: 'RFID tag wajib diisi' });
   }
 
   try {
-    // Cek apakah guru dengan RFID atau NIP sudah ada
+    // Cek apakah guru dengan RFID sudah ada
     const existingGuru = await guru.findOne({ where: { rfid_tag } });
 
     if (existingGuru) {
       return res.status(400).json({ message: 'Guru dengan RFID ini sudah ada' });
     }
 
+    // Jika tidak ada guru dengan RFID yang sama, tambah guru baru
     const newGuru = await guru.create({
-      nama,
-      nip,
-      jabatan,
+      nama,      // Bisa null
+      nip,       // Bisa null
+      jabatan,   // Bisa null
       rfid_tag,
     });
 
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Guru berhasil ditambahkan',
-      guru: newGuru,
+      guru: {
+        id_guru: newGuru.id_guru,
+        nama: newGuru.nama,
+        nip: newGuru.nip,        // Nip akan tetap null jika tidak diisi
+        jabatan: newGuru.jabatan,
+        rfid_tag: newGuru.rfid_tag,
+        createdAt: newGuru.createdAt,
+        updatedAt: newGuru.updatedAt
+      },
     });
   } catch (error) {
     console.error('Error creating guru:', error.message);
