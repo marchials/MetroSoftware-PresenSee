@@ -19,8 +19,8 @@ const addAbsensi = async (req, res) => {
   // Validasi jam masuk dan pulang
   const hour = now.hour();
   const minute = now.minute();
-  const isValidMasuk = (hour === 8 && minute >= 0) || (hour === 17 && minute <= 0);
-  const isValidKeluar = (hour === 8 && minute >= 0) || (hour === 17 && minute <= 0);
+  const isValidMasuk = (hour === 16 && minute >= 0) || (hour === 18 && minute <= 0);
+  const isValidKeluar = (hour === 16 && minute >= 0) || (hour === 17 && minute <= 0);
 
   try {
     // Cek apakah RFID ada di database guru
@@ -48,7 +48,7 @@ const addAbsensi = async (req, res) => {
       }
 
       // Tentukan status kehadiran
-      const keteranganMasuk = now.hour() < 7 || (now.hour() === 7 && now.minute() <= 30) ? "Tepat Waktu" : "Terlambat";
+      const keteranganMasuk = now.hour() < 7 || (now.hour() === 16 && now.minute() <= 30) ? "Tepat Waktu" : "Terlambat";
 
       await absensi_guru.create({
         id_guru: existingGuru.id_guru,
